@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Number Guesser</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="scripts.js"></script>
   </head>
   <body style>
@@ -18,18 +19,23 @@
       </div>
     </div>
     <div id="gameboard">
-      <form class="guess" autocomplete="off">
-        <input type="text" name="guess" placeholder="Enter your guess">
+      <div id="prompt">
+        Choose a number from
+        <span id="min" class="highlighted bold">1</span> to
+        <span id="max" class="highlighted bold">100</span>
+      </div>
+      <form class="guess" id="guess-form" autocomplete="off">
+        <input type="number" min="1" max="100" name="guess" id="guess-value" placeholder="Enter your guess">
         <div class="buttons">
-          <button name="guess">Guess</button>
-          <button name="clear">Clear</button>
+          <button id="guess-button" type="button">Guess</button>
+          <button id="clear-button" type="reset">Clear</button>
         </div>
       </form>
       <div id="feedback">
         <div class="description">Your last guess was</div>
         <div id="number">25</div>
         <div class="description" id="comparison">That was too high</div>
-        <button name="reset">Reset</button>
+        <button id="reset-button">Reset</button>
       </div>
     </div>
   </body>
