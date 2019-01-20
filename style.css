@@ -1,0 +1,124 @@
+body {
+  --highlight: #ed458b;
+  --dark-neutral: #404041;
+  --mid-neutral: #929497;
+  --light-neutral: #d0d2d3;
+  --lighter-neutral: #e6e7e8;
+  --lightest-neutral: white;
+  margin: 0;
+  font-family: "Open Sans";
+}
+
+button {
+  outline: none;
+  background-color: var(--mid-neutral);
+}
+button:hover {
+  background-color: var(--highlight);
+
+}
+
+#title-bar {
+  background-color: var(--dark-neutral);
+  width: 100%;
+  text-align: center;
+}
+
+#title {
+  padding: 1rem;
+  font-size: 4em;
+}
+
+#gameboard{
+  margin: 0 auto;
+  width: 500px;
+  height: 500px;
+}
+
+form.guess{
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+form.guess .buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+form.guess input[type=text] {
+  margin: 3rem 0;
+  color: var(--mid-neutral);
+  font-family: "Open Sans";
+  border: 2px solid var(--light-neutral);
+  outline-color: var(--highlight);
+  padding: 0.4rem 1rem;
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+form.guess button {
+  border: none;
+  width: 46%;
+  padding: 0.3rem 0 0.4rem 0;
+  border-radius: 5rem;
+  font-size: 2em;
+  font-weight: 300;
+  color: var(--lightest-neutral);
+  font-family: "Open Sans"
+}
+
+input::placeholder {
+  color: var(--light-neutral);
+}
+
+#feedback {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 4rem auto;
+}
+
+
+#feedback button {
+  border: none;
+  width: 100%;
+  padding: 0.2rem 0 0.3rem 0;
+  border-radius: 5rem;
+  font-size: 1.5em;
+  font-weight: 300;
+  color: var(--lightest-neutral);
+  font-family: "Open Sans";
+  margin-top: 3rem;
+}
+
+#feedback .description {
+  color: var(--dark-neutral);
+  font-size: 2rem;
+  font-weight: 300;
+  margin: 1rem;
+}
+
+#feedback #number{
+  font-size: 15rem;
+  margin: 0;
+  font-weight: 300;
+  color: var(--highlight);
+  line-height: 15rem;
+
+}
+
+span.bold {
+  font-weight: 700;
+}
+span.thin {
+  font-weight: 300;
+}
+span.highlighted {
+  color: var(--highlight);
+}
+span.lighter {
+  color: var(--lighter-neutral);
+}
