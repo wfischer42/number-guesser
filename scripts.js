@@ -16,11 +16,10 @@ function reset_game() {
   correct_number = Math.ceil(Math.random() * max);
   $("#min").html(min)
   $("#max").html(max)
-  $("#min-value").val(min)
   $("#max-value").val(max)
   game_state = GameStates.PREGAME;
   input_state = InputStates.EMPTY;
-  $("#guess-value").prop("disabled", false);
+  $("#feedback").hide();
   $("#guess-value").val("");
   refresh_view();
   $("#guess-value").focus();
@@ -29,8 +28,8 @@ function reset_game() {
 function evaluate_guess(last_guess){
   if (last_guess == correct_number) {
     game_state = GameStates.GAMEOVER;
-    correct_number = Math.ceil(Math.random() * max);
     max += 10;
+    correct_number = Math.ceil(Math.random() * max);
     return "BOOM! Try a harder one...";
   } else if (last_guess > correct_number) {
     return "That is too high";
@@ -42,7 +41,6 @@ function evaluate_guess(last_guess){
 function submit_guess() {
   game_state = GameStates.INGAME;
   var last_guess = $("#guess-value").val();
-  console.log(last_guess);
   var response = evaluate_guess(last_guess);
   $("#feedback").show();
   $("#guess-value").val('');
@@ -119,8 +117,6 @@ function update_max(new_max) {
   refresh_view();
 }
 
-onload=reset_game;
-
 $(document).ready(function() {
   $("#max-value").keyup(function(){
     update_max($(this).val());
@@ -133,7 +129,6 @@ $(document).ready(function() {
       if (validate_guess_value($("#guess-value").val())){
         submit_guess();
       }
-      return false;
     }
   });
 
@@ -142,7 +137,6 @@ $(document).ready(function() {
     if (keyCode === 13) {
       e.preventDefault();
       $("#guess-value").focus();
-      return false;
     }
   });
 
@@ -163,3 +157,5 @@ $(document).ready(function() {
 
   $("#reset-button").click(reset_game);
 });
+
+window.onload=reset_game;
