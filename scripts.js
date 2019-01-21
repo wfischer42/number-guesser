@@ -33,7 +33,7 @@ function evaluate_guess(last_guess){
   if (last_guess == correct_number) {
     game_state = GameStates.GAMEOVER;
     window.max += 10;
-    return "BOOM!";
+    return "BOOM! Try a harder one...";
   } else if (last_guess > correct_number) {
     return "That is too high";
   } else if (last_guess < correct_number) {
