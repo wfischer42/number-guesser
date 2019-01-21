@@ -10,17 +10,14 @@ var InputStates = {
   VALID: 3
 }
 
-
 function reset_game() {
-  guess_count = 0;
-  $("#feedback").hide();
-  window.min = 1;
-  window.max = 100;
-  correct_number = Math.ceil(Math.random() * window.max);
-  $("#min").html(window.min)
-  $("#max").html(window.max)
-  $("#min-value").val(window.min)
-  $("#max-value").val(window.max)
+  min = 1;
+  max = 100;
+  correct_number = Math.ceil(Math.random() * max);
+  $("#min").html(min)
+  $("#max").html(max)
+  $("#min-value").val(min)
+  $("#max-value").val(max)
   game_state = GameStates.PREGAME;
   input_state = InputStates.EMPTY;
   $("#guess-value").prop("disabled", false);
@@ -32,8 +29,8 @@ function reset_game() {
 function evaluate_guess(last_guess){
   if (last_guess == correct_number) {
     game_state = GameStates.GAMEOVER;
-    correct_number = Math.ceil(Math.random() * window.max);
-    window.max += 10;
+    correct_number = Math.ceil(Math.random() * max);
+    max += 10;
     return "BOOM! Try a harder one...";
   } else if (last_guess > correct_number) {
     return "That is too high";
@@ -60,7 +57,7 @@ function validate_guess_value(guess_value) {
   if (isNaN(guess_value)){
     input_state = InputStates.EMPTY;
     return false
-  } else if (guess_value > window.max || guess_value < window.min) {
+  } else if (guess_value > max || guess_value < min) {
     input_state = InputStates.INVALID;
     return false;
   } else {
@@ -71,7 +68,7 @@ function validate_guess_value(guess_value) {
 
 function refresh_view(){
   if (game_state === GameStates.GAMEOVER) {
-    $("#max").html(window.max);
+    $("#max").html(max);
   } else if (game_state === GameStates.PREGAME) {
     $("#prompt").hide();
     $("#settings").show();
@@ -102,7 +99,7 @@ function set_input_state(guess_value) {
   guess_value = parseInt(guess_value);
   if (isNaN(guess_value)) {
     input_state = InputStates.EMPTY;
-  } else if (guess_value > window.max || guess_value < window.min) {
+  } else if (guess_value > max || guess_value < min) {
     input_state = InputStates.INVALID;
   } else {
     input_state = InputStates.VALID;
@@ -114,15 +111,15 @@ function update_max(new_max) {
 
   $("#guess-value").val("");
   input_state = InputStates.EMPTY;
-  if (new_max > window.min) {
-    window.max = new_max;
-    $("#max").html(window.max);
-    correct_number = Math.ceil(Math.random() * window.max);
+  if (new_max > min) {
+    max = new_max;
+    $("#max").html(max);
+    correct_number = Math.ceil(Math.random() * max);
   }
   refresh_view();
 }
 
-window.onload=reset_game;
+onload=reset_game;
 
 $(document).ready(function() {
   $("#max-value").keyup(function(){
