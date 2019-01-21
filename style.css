@@ -27,6 +27,7 @@ button:hover {
 button:disabled,
 button[disabled]{
   background-color: var(--light-neutral);
+  cursor: default;
 }
 
 #title-bar {

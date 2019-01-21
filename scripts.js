@@ -71,8 +71,6 @@ function validate_guess_value(guess_value) {
 
 function refresh_view(){
   if (game_state === GameStates.GAMEOVER) {
-    // $("#guess-button").prop("disabled", true);
-    // $("#clear-button").prop("disabled", true);
     $("#max").html(window.max);
   } else if (game_state === GameStates.PREGAME) {
     $("#prompt").hide();
@@ -163,6 +161,7 @@ $(document).ready(function() {
     $("#guess-value").val("")
     input_state = InputStates.EMPTY;
     refresh_view();
+    $("#guess-value").focus();
   });
 
   $("#reset-button").click(reset_game);
