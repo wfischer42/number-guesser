@@ -10,21 +10,30 @@ var InputStates = {
   VALID: 3
 }
 
+
 function reset_game() {
   correct_number = Math.ceil(Math.random() * 100);
   guess_count = 0;
   $("#feedback").hide();
+  window.min = 1;
+  window.max = 100;
+  $("#min").html(window.min)
+  $("#max").html(window.max)
+  $("#min-value").val(window.min)
+  $("#max-value").val(window.max)
   game_state = GameStates.PREGAME;
   input_state = InputStates.EMPTY;
   $("#guess-value").prop("disabled", false);
+  $("#guess-value").val("");
   refresh_view();
-  $("#guess-value").focus()
+  $("#guess-value").focus();
 }
 
 function evaluate_guess(last_guess){
   if (last_guess == correct_number) {
     game_state = GameStates.GAMEOVER;
-    return "BOOM!";
+    window.max += 10;
+    return "BOOM! Try a harder one...";
   } else if (last_guess > correct_number) {
     return "That is too high";
   } else if (last_guess < correct_number) {
@@ -46,10 +55,11 @@ function submit_guess() {
 }
 
 function validate_guess_value(guess_value) {
-  if (guess_value == ""){
+  guess_value = parseInt(guess_value);
+  if (isNaN(guess_value)){
     input_state = InputStates.EMPTY;
     return false
-  } else if (guess_value > 100 || guess_value < 1) {
+  } else if (guess_value > window.max || guess_value < window.min) {
     input_state = InputStates.INVALID;
     return false;
   } else {
@@ -62,8 +72,15 @@ function refresh_view(){
   if (game_state === GameStates.GAMEOVER) {
     $("#guess-button").prop("disabled", true);
     $("#clear-button").prop("disabled", true);
-    $("#guess-value").prop("disabled", true);
+    $("#max").html(window.max);
   } else {
+    if (game_state === GameStates.PREGAME) {
+      $("#prompt").hide();
+      $("#settings").show();
+    } else if (game_state === GameStates.INGAME) {
+      $("#prompt").show();
+      $("#settings").hide();
+    }
     $("#guess-value").prop("disabled", false);
     switch (input_state) {
       case InputStates.EMPTY:
@@ -86,18 +103,52 @@ function refresh_view(){
 }
 
 function set_input_state(guess_value) {
-  if (guess_value == "") {
+  guess_value = parseInt(guess_value);
+  if (isNaN(guess_value)) {
     input_state = InputStates.EMPTY;
-  } else if (guess_value > 100 || guess_value < 1) {
+  } else if (guess_value > window.max || guess_value < window.min) {
     input_state = InputStates.INVALID;
   } else {
     input_state = InputStates.VALID;
   }
 }
 
+function update_max(new_max) {
+  new_max = parseInt(new_max);
+
+  $("#guess-value").val("");
+  input_state = InputStates.EMPTY;
+  if (new_max > window.min) {
+    window.max = new_max;
+    $("#max").html(window.max);
+    $("#min").html(window.min);
+  }
+  refresh_view();
+}
+
+function update_min(new_min) {
+  new_min = parseInt(new_min);
+  input_state = InputStates.EMPTY;
+  $("#guess-value").val("");
+  if (new_min < window.max) {
+    window.min = new_min;
+    $("#min").html(window.min);
+    $("#max").html(window.max);
+  }
+  refresh_view();
+}
+
 window.onload=reset_game;
 
 $(document).ready(function() {
+  $("#min-value").keyup(function(){
+    update_min($(this).val());
+  });
+
+  $("#max-value").keyup(function(){
+    update_max($(this).val());
+  });
+
   $("#guess-form").on('keyup keypress', function(e) {
     var keyCode = e.keyCode || e.which;
     if (keyCode === 13) {
