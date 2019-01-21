@@ -19,10 +19,21 @@
       </div>
     </div>
     <div id="gameboard">
-      <div id="prompt">
-        Choose a number from
-        <span id="min" class="highlighted bold">1</span> to
-        <span id="max" class="highlighted bold">100</span>
+      <div class="prompt-block">
+        <div id="prompt">
+          Guess a number from
+          <span id="min" class="highlighted bold">1</span> to
+          <span id="max" class="highlighted bold">100</span>
+        </div>
+        <div id="settings">
+          <form class="settings" id="game-settings" autocomplete="off">
+            <label>Guess a number from</label>
+            <span class="highlighted bold"> 1 </span>
+            <!-- <input type="number" class="range-input" value="1" id="min-value" placeholder="min" /> -->
+            <label> to </label>
+            <input type="number" class="range-input" value="100" id="max-value" placeholder="max" />
+          </form>
+        </div>
       </div>
       <form class="guess" id="guess-form" autocomplete="off">
         <input type="number" min="1" max="100" name="guess" id="guess-value" placeholder="Enter your guess">
