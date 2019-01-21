@@ -12,11 +12,11 @@ var InputStates = {
 
 
 function reset_game() {
-  correct_number = Math.ceil(Math.random() * 100);
   guess_count = 0;
   $("#feedback").hide();
   window.min = 1;
   window.max = 100;
+  correct_number = Math.ceil(Math.random() * window.max);
   $("#min").html(window.min)
   $("#max").html(window.max)
   $("#min-value").val(window.min)
@@ -32,6 +32,7 @@ function reset_game() {
 function evaluate_guess(last_guess){
   if (last_guess == correct_number) {
     game_state = GameStates.GAMEOVER;
+    correct_number = Math.ceil(Math.random() * window.max);
     window.max += 10;
     return "BOOM! Try a harder one...";
   } else if (last_guess > correct_number) {
@@ -70,35 +71,32 @@ function validate_guess_value(guess_value) {
 
 function refresh_view(){
   if (game_state === GameStates.GAMEOVER) {
-    $("#guess-button").prop("disabled", true);
-    $("#clear-button").prop("disabled", true);
+    // $("#guess-button").prop("disabled", true);
+    // $("#clear-button").prop("disabled", true);
     $("#max").html(window.max);
-  } else {
-    if (game_state === GameStates.PREGAME) {
-      $("#prompt").hide();
-      $("#settings").show();
-    } else if (game_state === GameStates.INGAME) {
-      $("#prompt").show();
-      $("#settings").hide();
-    }
-    $("#guess-value").prop("disabled", false);
-    switch (input_state) {
-      case InputStates.EMPTY:
-        $("#guess-value").removeClass("invalid-input");
-        $("#guess-button").prop("disabled", true);
-        $("#clear-button").prop("disabled", true);
-        break;
-      case InputStates.INVALID:
-        $("#guess-value").addClass("invalid-input");
-        $("#guess-button").prop("disabled", true);
-        $("#clear-button").prop("disabled", false);
-        break;
-      case InputStates.VALID:
-        $("#guess-value").removeClass("invalid-input");
-        $("#guess-button").prop("disabled", false);
-        $("#clear-button").prop("disabled", false);
-        break;
-    }
+  } else if (game_state === GameStates.PREGAME) {
+    $("#prompt").hide();
+    $("#settings").show();
+  } else if (game_state === GameStates.INGAME) {
+    $("#prompt").show();
+    $("#settings").hide();
+  }
+  switch (input_state) {
+    case InputStates.EMPTY:
+      $("#guess-value").removeClass("invalid-input");
+      $("#guess-button").prop("disabled", true);
+      $("#clear-button").prop("disabled", true);
+      break;
+    case InputStates.INVALID:
+      $("#guess-value").addClass("invalid-input");
+      $("#guess-button").prop("disabled", true);
+      $("#clear-button").prop("disabled", false);
+      break;
+    case InputStates.VALID:
+      $("#guess-value").removeClass("invalid-input");
+      $("#guess-button").prop("disabled", false);
+      $("#clear-button").prop("disabled", false);
+      break;
   }
 }
 
@@ -121,19 +119,7 @@ function update_max(new_max) {
   if (new_max > window.min) {
     window.max = new_max;
     $("#max").html(window.max);
-    $("#min").html(window.min);
-  }
-  refresh_view();
-}
-
-function update_min(new_min) {
-  new_min = parseInt(new_min);
-  input_state = InputStates.EMPTY;
-  $("#guess-value").val("");
-  if (new_min < window.max) {
-    window.min = new_min;
-    $("#min").html(window.min);
-    $("#max").html(window.max);
+    correct_number = Math.ceil(Math.random() * window.max);
   }
   refresh_view();
 }
@@ -141,10 +127,6 @@ function update_min(new_min) {
 window.onload=reset_game;
 
 $(document).ready(function() {
-  $("#min-value").keyup(function(){
-    update_min($(this).val());
-  });
-
   $("#max-value").keyup(function(){
     update_max($(this).val());
   });
@@ -159,6 +141,16 @@ $(document).ready(function() {
       return false;
     }
   });
+
+  $("#max-value").on('keyup keypress', function(e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode === 13) {
+      e.preventDefault();
+      $("#guess-value").focus();
+      return false;
+    }
+  });
+
 
   $("#guess-value").keyup(function(){
     set_input_state($(this).val());
